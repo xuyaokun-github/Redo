@@ -20,4 +20,8 @@ public class TestRedoTodoList {
         RedoTask redoTask = RedoTask.newBuilder("").maxAttempts(3).build();
         System.out.println(redoTask);
     }
+
+    /*
+        D:\maven\apache-maven-3.6.3-bin\apache-maven-3.6.3\conf\settings.xml
+     */
 }
