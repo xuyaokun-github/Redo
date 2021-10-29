@@ -1,4 +1,4 @@
-package cn.com.kun.component.clusterlock.dblock;
+package cn.com.kun.component.clusterlock.bean;
 
 public class PessimisticLockDO {
 

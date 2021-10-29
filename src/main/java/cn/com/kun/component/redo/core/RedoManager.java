@@ -1,4 +1,4 @@
-package cn.com.kun.component.redo;
+package cn.com.kun.component.redo.core;
 
 import cn.com.kun.component.redo.bean.entiy.RedoTaskDO;
 import cn.com.kun.component.redo.bean.vo.RedoReqParam;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +22,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-@Component
+//@Component
 public class RedoManager {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RedoManager.class);
@@ -45,7 +44,7 @@ public class RedoManager {
     }
 
     private String buildLockResourceName() {
-        return "cn.com.kun.component.redo.RedoManager.findAndRedo:" + applicationName;
+        return "cn.com.kun.component.redo.core.RedoManager.findAndRedo:" + applicationName;
     }
 
     /**

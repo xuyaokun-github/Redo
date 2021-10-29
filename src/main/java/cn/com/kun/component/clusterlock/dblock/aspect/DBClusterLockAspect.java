@@ -1,5 +1,7 @@
-package cn.com.kun.component.clusterlock.dblock;
+package cn.com.kun.component.clusterlock.dblock.aspect;
 
+import cn.com.kun.component.clusterlock.annotation.DBClusterLock;
+import cn.com.kun.component.clusterlock.dblock.DBClusterLockHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,7 +33,7 @@ public class DBClusterLockAspect {
     @Value("${dbclusterlock.clusterCode:}")
     private String clusterCode;
 
-    @Pointcut("@annotation(cn.com.kun.component.clusterlock.dblock.DBClusterLock)")
+    @Pointcut("@annotation(cn.com.kun.component.clusterlock.annotation.DBClusterLock)")
     public void pointCut(){
 
     }

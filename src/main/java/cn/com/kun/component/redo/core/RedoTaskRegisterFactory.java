@@ -1,4 +1,4 @@
-package cn.com.kun.component.redo;
+package cn.com.kun.component.redo.core;
 
 import cn.com.kun.component.redo.callback.RedoTaskCallback;
 import cn.com.kun.component.redo.common.RedoTaskCallbackNotFoundException;
@@ -6,6 +6,7 @@ import cn.com.kun.component.redo.common.RedoTaskNotFoundException;
 import cn.com.kun.component.redo.bean.vo.RedoTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,13 @@ public class RedoTaskRegisterFactory {
 
     private static Map<String, RedoTask> redoTasks = new HashMap();
 
+    public static void register(RedoTask redoTask, RedoTaskCallback redoTaskCallback){
+        registerRedoTask(redoTask);
+        registerRedoTaskCallback(redoTask.getRedoTaskId(), redoTaskCallback);
+    }
+
     public static void registerRedoTask(RedoTask redoTask){
+        Assert.notNull(redoTask.getRedoTaskId(), "补偿任务业务ID不能为空");
         redoTasks.put(redoTask.getRedoTaskId(), redoTask);
     }
 
@@ -46,6 +53,7 @@ public class RedoTaskRegisterFactory {
      * @param redoTaskCallback
      */
     public static void registerRedoTaskCallback(String redoTaskId, RedoTaskCallback redoTaskCallback){
+        Assert.notNull(redoTaskCallback, "补偿任务逻辑不能为空");
         redoTaskCallbacks.put(redoTaskId, redoTaskCallback);
     }
 

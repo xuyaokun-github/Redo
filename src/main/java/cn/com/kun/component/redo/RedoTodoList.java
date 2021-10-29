@@ -14,7 +14,7 @@ import cn.com.kun.component.redo.bean.vo.RedoTask;
  * date:2021/10/27
  * desc:
 */
-public class TestRedoTodoList {
+public class RedoTodoList {
 
     public static void main(String[] args) {
         RedoTask redoTask = RedoTask.newBuilder("").maxAttempts(3).build();

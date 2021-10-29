@@ -1,7 +1,7 @@
-package cn.com.kun.service.redo;
+package cn.com.kun.component.demo;
 
-import cn.com.kun.component.redo.RedoManager;
-import cn.com.kun.component.redo.RedoTaskRegisterFactory;
+import cn.com.kun.component.redo.core.RedoManager;
+import cn.com.kun.component.redo.core.RedoTaskRegisterFactory;
 import cn.com.kun.component.redo.bean.vo.RedoReqParam;
 import cn.com.kun.component.redo.bean.vo.RedoResult;
 import cn.com.kun.component.redo.bean.vo.RedoTask;
@@ -10,13 +10,12 @@ import cn.com.kun.component.redo.utils.JacksonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+//@Service
 public class RedoDemoService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RedoDemoService.class);
@@ -58,7 +57,7 @@ public class RedoDemoService {
     }
 
     /**
-     * 这是一个业务方法
+     * 具体的业务方法
      */
     public void doService(String name, String desc){
 

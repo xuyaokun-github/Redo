@@ -2,6 +2,9 @@ package cn.com.kun.component.clusterlock.dblock;
 
 import cn.com.kun.component.clusterlock.ClusterLockHandler;
 //import com.mysql.jdbc.exceptions.jdbc4.MySQLTransactionRollbackException;
+import cn.com.kun.component.clusterlock.bean.LockWrapper;
+import cn.com.kun.component.clusterlock.bean.PessimisticLockDO;
+import cn.com.kun.component.clusterlock.dblock.dao.PessimisticLockMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -23,7 +26,7 @@ import java.util.Map;
  * date:2021/7/7
  * desc:
 */
-@Component
+//@Component
 public class DBClusterLockHandler implements ClusterLockHandler {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DBClusterLockHandler.class);
