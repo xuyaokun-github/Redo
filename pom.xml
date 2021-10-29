@@ -12,7 +12,7 @@
     <groupId>io.github.kunghsu1021</groupId>
     <!--<groupId>com.kunghsu</groupId>-->
     <artifactId>redo</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>分布式补偿重试组件</name>
     <description>分布式补偿重试组件</description>
