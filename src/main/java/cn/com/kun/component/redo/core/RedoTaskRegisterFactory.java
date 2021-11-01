@@ -1,8 +1,8 @@
 package cn.com.kun.component.redo.core;
 
 import cn.com.kun.component.redo.callback.RedoTaskCallback;
-import cn.com.kun.component.redo.common.RedoTaskCallbackNotFoundException;
-import cn.com.kun.component.redo.common.RedoTaskNotFoundException;
+import cn.com.kun.component.redo.common.exception.RedoTaskCallbackNotFoundException;
+import cn.com.kun.component.redo.common.exception.RedoTaskNotFoundException;
 import cn.com.kun.component.redo.bean.vo.RedoTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 补偿任务注册工厂
@@ -22,11 +23,14 @@ public class RedoTaskRegisterFactory {
     private final static Logger LOGGER = LoggerFactory.getLogger(RedoTaskRegisterFactory.class);
 
     /**
-     * 重试任务集合
+     * 重试任务回调逻辑集合
      */
-    private static Map<String, RedoTaskCallback> redoTaskCallbacks = new HashMap();
+    private static Map<String, RedoTaskCallback> redoTaskCallbacks = new ConcurrentHashMap<>();
 
-    private static Map<String, RedoTask> redoTasks = new HashMap();
+    /**
+     * 重试任务定义集合
+     */
+    private static Map<String, RedoTask> redoTasks = new ConcurrentHashMap();
 
     public static void register(RedoTask redoTask, RedoTaskCallback redoTaskCallback){
         registerRedoTask(redoTask);

@@ -1,6 +1,6 @@
 package cn.com.kun.component.redo.configuration;
 
-import cn.com.kun.component.redo.core.RedoSleeper;
+import cn.com.kun.component.redo.utils.RedoSleeper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

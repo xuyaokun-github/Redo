@@ -5,7 +5,7 @@ import cn.com.kun.component.redo.bean.vo.RedoReqParam;
 import cn.com.kun.component.redo.bean.vo.RedoResult;
 import cn.com.kun.component.redo.bean.vo.RedoTask;
 import cn.com.kun.component.redo.callback.RedoTaskCallback;
-import cn.com.kun.component.redo.common.RedoTaskCallbackNotFoundException;
+import cn.com.kun.component.redo.common.exception.RedoTaskCallbackNotFoundException;
 import cn.com.kun.component.redo.dao.RedoTaskMapper;
 import cn.com.kun.component.redo.lock.LockControl;
 import cn.com.kun.component.redo.lock.LockControlRegistry;
@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-//@Component
+@Component
 public class RedoManager {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RedoManager.class);
@@ -116,6 +117,7 @@ public class RedoManager {
         //锁资源名称，每个微服务应该使用不同的锁名
         try {
             lockControl.lock(lockResourceName);
+            //TODO 这里可以考虑给扩展点，让用户决定是否使用数据库作为保存补偿任务的介质，可以使用redis替代
             List<RedoTaskDO> redoTaskDOList = selectRedoTaskList();
             if (CollectionUtils.isEmpty(redoTaskDOList)){
                 if (LOGGER.isTraceEnabled()){

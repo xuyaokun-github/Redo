@@ -1,0 +1,2 @@
+mvn clean compile package
+mvn clean deploy -DskipTests -Darguments="gpg.passphrase=私钥密码"

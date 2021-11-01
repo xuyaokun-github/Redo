@@ -1,4 +1,4 @@
-package cn.com.kun.component.redo.common;
+package cn.com.kun.component.redo.common.exception;
 
 public class RedoTaskNotFoundException extends RuntimeException {
 

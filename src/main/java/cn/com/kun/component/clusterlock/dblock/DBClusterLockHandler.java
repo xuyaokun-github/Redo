@@ -26,7 +26,7 @@ import java.util.Map;
  * date:2021/7/7
  * desc:
 */
-//@Component
+@Component
 public class DBClusterLockHandler implements ClusterLockHandler {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DBClusterLockHandler.class);

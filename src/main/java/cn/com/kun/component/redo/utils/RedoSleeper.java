@@ -1,4 +1,4 @@
-package cn.com.kun.component.redo.core;
+package cn.com.kun.component.redo.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

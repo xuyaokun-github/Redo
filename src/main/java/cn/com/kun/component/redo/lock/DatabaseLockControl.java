@@ -4,7 +4,7 @@ import cn.com.kun.component.clusterlock.dblock.DBClusterLockHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class DatabaseLockControl implements LockControl{
 
     @Autowired

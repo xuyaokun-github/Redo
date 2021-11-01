@@ -1,8 +1,6 @@
-package cn.com.kun.component.redo.common;
+package cn.com.kun.component.redo.common.exception;
 
 public class RedoTaskCallbackNotFoundException extends RuntimeException {
-
-//    private String errorMsg = "RedoTaskCallback Not Found!";
 
     public RedoTaskCallbackNotFoundException() {
         super("RedoTaskCallback Not Found!");
