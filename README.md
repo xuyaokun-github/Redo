@@ -1,8 +1,8 @@
-# Redo
-分布式补偿重试组件
-
 # 使用步骤
-1、添加依赖脚本
+## 1、添加依赖脚本
+###### 数据库锁表
+
+```
 CREATE TABLE `tbl_pessimistic_lock` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `resource` varchar(500) NOT NULL COMMENT '锁定的资源，可以是方法名或者业务唯一标志',
@@ -10,7 +10,11 @@ CREATE TABLE `tbl_pessimistic_lock` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uiq_idx_resource` (`resource`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='数据库分布式悲观锁表';
+```
 
+
+
+```
 CREATE TABLE `tbl_redotask`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `redo_task_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '补偿任务业务ID',
@@ -23,19 +27,25 @@ CREATE TABLE `tbl_redotask`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+```
 
 
-插入数据库锁记录
+
+###### 插入数据库锁记录
+
+```
 INSERT INTO `tbl_pessimistic_lock`(`id`, `resource`, `description`)
 VALUES (1, 'cn.com.kun.component.redo.core.RedoManager.findAndRedo:微服务名', '重试组件依赖锁');
+```
 
 
-2.启动类加上@EnableRedo注解
 
+## 2.启动类加上@EnableRedo注解
 或者可以在其他@Configuration类加也可以
 
-3.定义补偿任务和注册补偿任务回调
+## 3.定义补偿任务和注册补偿任务回调
 
+```
 @PostConstruct
 public void init() {
 
@@ -53,18 +63,15 @@ public void init() {
         }
     });
 }
+```
+
 
 
 可以使用匿名内部类实现RedoTaskCallback接口，也可以单独起一个类。
 方法的入参即保存到数据库中的参数
 
-4.业务代码中使用
-
+## 4.业务代码中使用
 需要补偿的时候，调用cn.com.kun.component.redo.core.RedoManager#addRedoTask进行添加
-具体例子，参考demo包下的service
 
-使用建议
+## 使用建议
 假如时时效性高且不要求准确性的补偿任务，建议使用spring-retry，因为它更适合实时补偿的场景，它是在遇到错误时立刻重试。而Redo组件，是放入数据库再轮询进行补偿，牺牲了实时性，但提供了最终一致性。可以结合自身业务判断，同时使用spring-retry + Redo，例如在spring-retry的降级方法里调用RedoManager#addRedoTask，将补偿任务落地到数据库。
-
-
-
