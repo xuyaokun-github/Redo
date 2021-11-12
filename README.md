@@ -1,11 +1,7 @@
 # Redo
 分布式补偿重试组件
 
-具体demo参见我的Github-Redo组件
-
-Readme
-
-使用步骤
+# 使用步骤
 1、添加依赖脚本
 CREATE TABLE `tbl_pessimistic_lock` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -35,9 +31,11 @@ VALUES (1, 'cn.com.kun.component.redo.core.RedoManager.findAndRedo:微服务名'
 
 
 2.启动类加上@EnableRedo注解
+
 或者可以在其他@Configuration类加也可以
 
 3.定义补偿任务和注册补偿任务回调
+
 @PostConstruct
 public void init() {
 
@@ -61,7 +59,9 @@ public void init() {
 方法的入参即保存到数据库中的参数
 
 4.业务代码中使用
+
 需要补偿的时候，调用cn.com.kun.component.redo.core.RedoManager#addRedoTask进行添加
+具体例子，参考demo包下的service
 
 使用建议
 假如时时效性高且不要求准确性的补偿任务，建议使用spring-retry，因为它更适合实时补偿的场景，它是在遇到错误时立刻重试。而Redo组件，是放入数据库再轮询进行补偿，牺牲了实时性，但提供了最终一致性。可以结合自身业务判断，同时使用spring-retry + Redo，例如在spring-retry的降级方法里调用RedoManager#addRedoTask，将补偿任务落地到数据库。
