@@ -74,4 +74,4 @@ public void init() {
 需要补偿的时候，调用cn.com.kun.component.redo.core.RedoManager#addRedoTask进行添加
 
 ## 使用建议
-假如时时效性高且不要求准确性的补偿任务，建议使用spring-retry，因为它更适合实时补偿的场景，它是在遇到错误时立刻重试。而Redo组件，是放入数据库再轮询进行补偿，牺牲了实时性，但提供了最终一致性。可以结合自身业务判断，同时使用spring-retry + Redo，例如在spring-retry的降级方法里调用RedoManager#addRedoTask，将补偿任务落地到数据库。
+假如是时效性高且不要求准确性的补偿任务，建议使用spring-retry，因为它更适合实时补偿的场景，它是在遇到错误时立刻重试。而Redo组件，是放入数据库再轮询进行补偿，牺牲了实时性，但提供了最终一致性。可以结合自身业务判断，同时使用spring-retry + Redo，例如在spring-retry的降级方法里调用RedoManager#addRedoTask，将补偿任务落地到数据库。
