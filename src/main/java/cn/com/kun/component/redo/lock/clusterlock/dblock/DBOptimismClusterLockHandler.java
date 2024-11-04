@@ -1,6 +1,6 @@
-package cn.com.kun.component.clusterlock.dblock;
+package cn.com.kun.component.redo.lock.clusterlock.dblock;
 
-import cn.com.kun.component.clusterlock.ClusterLockHandler;
+import cn.com.kun.component.redo.lock.clusterlock.ClusterLockHandler;
 
 public class DBOptimismClusterLockHandler implements ClusterLockHandler {
 

@@ -1,6 +1,6 @@
-package cn.com.kun.component.clusterlock.dblock.dao;
+package cn.com.kun.component.redo.lock.clusterlock.dblock.dao;
 
-import cn.com.kun.component.clusterlock.bean.PessimisticLockDO;
+import cn.com.kun.component.redo.lock.clusterlock.bean.PessimisticLockDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

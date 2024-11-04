@@ -1,4 +1,4 @@
-package cn.com.kun.component.clusterlock.bean;
+package cn.com.kun.component.redo.lock.clusterlock.bean;
 
 import org.apache.ibatis.session.SqlSession;
 

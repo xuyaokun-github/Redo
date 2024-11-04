@@ -1,4 +1,4 @@
-package cn.com.kun.component.clusterlock;
+package cn.com.kun.component.redo.lock.clusterlock;
 
 /**
  * 分布式锁处理器接口

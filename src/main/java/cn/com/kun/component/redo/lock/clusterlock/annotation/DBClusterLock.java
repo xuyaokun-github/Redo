@@ -1,4 +1,4 @@
-package cn.com.kun.component.clusterlock.annotation;
+package cn.com.kun.component.redo.lock.clusterlock.annotation;
 
 import java.lang.annotation.*;
 

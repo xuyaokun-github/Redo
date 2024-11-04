@@ -1,6 +1,6 @@
 package cn.com.kun.component.redo.lock;
 
-import cn.com.kun.component.clusterlock.dblock.DBClusterLockHandler;
+import cn.com.kun.component.redo.lock.clusterlock.dblock.DBClusterLockHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
