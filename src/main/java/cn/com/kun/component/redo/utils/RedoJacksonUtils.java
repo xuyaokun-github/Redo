@@ -19,10 +19,10 @@ import java.util.function.Supplier;
  * date:2020/10/19
  * desc:
  */
-public class JacksonUtils {
+public class RedoJacksonUtils {
 
     private static final ObjectMapper mapper;
-    private final static Logger log = LoggerFactory.getLogger(JacksonUtils.class);
+    private final static Logger log = LoggerFactory.getLogger(RedoJacksonUtils.class);
 
     /**
      * 设置通用的属性

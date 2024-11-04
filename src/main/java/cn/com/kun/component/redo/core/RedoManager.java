@@ -9,7 +9,7 @@ import cn.com.kun.component.redo.common.exception.RedoTaskCallbackNotFoundExcept
 import cn.com.kun.component.redo.dao.RedoTaskMapper;
 import cn.com.kun.component.redo.lock.LockControl;
 import cn.com.kun.component.redo.lock.LockControlRegistry;
-import cn.com.kun.component.redo.utils.JacksonUtils;
+import cn.com.kun.component.redo.utils.RedoJacksonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -135,7 +135,7 @@ public class RedoManager {
                     deleteRedoTask(redoTaskDO);
                 }else {
                     //该条记录未过期，开始执行补偿
-                    RedoReqParam redoReqParam = JacksonUtils.toJavaObject(redoTaskDO.getReqParam(), RedoReqParam.class);
+                    RedoReqParam redoReqParam = RedoJacksonUtils.toJavaObject(redoTaskDO.getReqParam(), RedoReqParam.class);
                     RedoResult redoResult = invokeRedoTaskCallback(redoTaskDO.getRedoTaskId(), redoReqParam);
                     if (redoResult.isSuccess()){
                         //执行成功，删除数据库记录

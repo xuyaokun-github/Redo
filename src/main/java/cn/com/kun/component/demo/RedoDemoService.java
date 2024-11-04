@@ -6,7 +6,7 @@ import cn.com.kun.component.redo.bean.vo.RedoReqParam;
 import cn.com.kun.component.redo.bean.vo.RedoResult;
 import cn.com.kun.component.redo.bean.vo.RedoTask;
 import cn.com.kun.component.redo.callback.RedoTaskCallback;
-import cn.com.kun.component.redo.utils.JacksonUtils;
+import cn.com.kun.component.redo.utils.RedoJacksonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ public class RedoDemoService {
             map.put("desc", "kunghsu");
             redoReqParam.setParams(map);
             //调用组件提供出来的工具类方法，添加回调任务
-            redoManager.addRedoTask(redoTaskIdOne, JacksonUtils.toJSONString(redoReqParam));
+            redoManager.addRedoTask(redoTaskIdOne, RedoJacksonUtils.toJSONString(redoReqParam));
         }
 
     }
