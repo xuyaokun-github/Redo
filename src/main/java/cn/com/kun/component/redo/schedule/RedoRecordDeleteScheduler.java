@@ -13,18 +13,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 补偿任务调度器
- * 作用：查数据库表，逐个执行
- *
- * author:xuyaokun_kzx
- * date:2021/10/27
- * desc:
-*/
 @Component
-public class RedoTaskScheduler implements CommandLineRunner {
+public class RedoRecordDeleteScheduler implements CommandLineRunner {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(RedoTaskScheduler.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(RedoRecordDeleteScheduler.class);
 
     private ScheduledExecutorService executorPool = Executors.newScheduledThreadPool(1);
 
@@ -43,27 +35,27 @@ public class RedoTaskScheduler implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if (redoProperties.isEnabled() && redoProperties.isScheduleEnabled()){
-            LOGGER.info("启动补偿重试组件Redo主调度器");
-            executorPool.scheduleAtFixedRate(new RedoTaskProcessTask(), 1, redoProperties.getScheduleRate(), TimeUnit.SECONDS);
+        if (redoProperties.isEnabled() && redoProperties.isDeleteScheduleEnabled()){
+            LOGGER.info("启动补偿重试组件Redo数据清理调度器");
+            executorPool.scheduleAtFixedRate(new RedoRecordDeleteTask(), 1, redoProperties.getDeleteScheduleRate(), TimeUnit.SECONDS);
         }
     }
 
-    private final class RedoTaskProcessTask implements Runnable {
+    private final class RedoRecordDeleteTask implements Runnable {
 
-        RedoTaskProcessTask() {
+        RedoRecordDeleteTask() {
 
         }
 
         @Override
         public void run() {
             if (LOGGER.isDebugEnabled()){
-                LOGGER.debug("RedoTaskProcessTask running!");
+                LOGGER.debug("RedoRecordDeleteTask running!");
             }
             try {
-                redoManager.runRedo();
+                redoManager.recordDelete();
             }catch (Throwable e){
-                LOGGER.error("RedoTaskProcessTask error", e);
+                LOGGER.error("RedoRecordDeleteTask error", e);
             }
         }
     }

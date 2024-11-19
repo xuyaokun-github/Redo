@@ -13,7 +13,8 @@ public class RedoTask {
     private String redoTaskId;
 
     /**
-     * 最大重试次数
+     * 最大重试次数.
+     * 默认是0，表示不限次数
      */
     private int maxAttempts;
 
@@ -28,6 +29,11 @@ public class RedoTask {
      * 任务超过了这个日期，将不会再被重试
      */
     private Date expiredDate;
+
+    /**
+     * 过期时间（N秒之后过期）
+     */
+    private int expiredSeconds;
 
     public RedoTask(String redoTaskId) {
         this.redoTaskId = redoTaskId;
@@ -63,6 +69,14 @@ public class RedoTask {
 
     public void setMaxAttempts(int maxAttempts) {
         this.maxAttempts = maxAttempts;
+    }
+
+    public int getExpiredSeconds() {
+        return expiredSeconds;
+    }
+
+    public void setExpiredSeconds(int expiredSeconds) {
+        this.expiredSeconds = expiredSeconds;
     }
 
     public static RedoTaskBuilder newBuilder(String redoTaskId){
@@ -101,6 +115,13 @@ public class RedoTask {
         public RedoTaskBuilder expiredDate(Date expiredDate){
             if (expiredDate != null && expiredDate.after(new Date())){
                 this.redoTask.setExpiredDate(expiredDate);
+            }
+            return this;
+        }
+
+        public RedoTaskBuilder expiredSeconds(int expiredSeconds){
+            if (expiredSeconds > 0){
+                this.redoTask.setExpiredSeconds(expiredSeconds);
             }
             return this;
         }

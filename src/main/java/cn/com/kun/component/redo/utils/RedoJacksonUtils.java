@@ -141,7 +141,7 @@ public class RedoJacksonUtils {
      * @param <T>
      * @return
      */
-    public static <T> T toJavaObject(String obj, TypeReference valueTypeRef) {
+    public static <T> T toJavaObject(String obj, TypeReference<T> valueTypeRef) {
         //先将obj转成字符串
         return obj != null ? toJavaObject(obj, valueTypeRef, () -> null) : null;
     }
@@ -154,7 +154,7 @@ public class RedoJacksonUtils {
      * @param <T>
      * @return
      */
-    public static <T> T toJavaObject(String value, TypeReference valueTypeRef, Supplier<T> defaultSupplier) {
+    public static <T> T toJavaObject(String value, TypeReference<T> valueTypeRef, Supplier<T> defaultSupplier) {
         try {
             if (StringUtils.isBlank(value)) {
                 return defaultSupplier.get();

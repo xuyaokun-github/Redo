@@ -4,6 +4,9 @@ import java.util.Map;
 
 public class RedoReqParam {
 
+    /**
+     * 业务层参数
+     */
     private Map<String, Object> params;
 
     public Map<String, Object> getParams() {

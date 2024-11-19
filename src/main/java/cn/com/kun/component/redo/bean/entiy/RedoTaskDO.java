@@ -4,6 +4,11 @@ import java.util.Date;
 
 public class RedoTaskDO {
 
+    private long id;
+
+    /**
+     * 重试ID(通常具有业务含义)
+     */
     private String redoTaskId;
 
     /**
@@ -32,10 +37,24 @@ public class RedoTaskDO {
      * 任务超过了这个日期，将不会再被重试
      */
     private Date expiredDate;
+//    private LocalDateTime expiredDate;
 
+    /**
+     * 重试的请求参数
+     */
     private String reqParam;
 
     private Date createTime = new Date();
+
+    private Date queryTime;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getRedoTaskId() {
         return redoTaskId;
@@ -77,6 +96,14 @@ public class RedoTaskDO {
         this.expiredDate = expiredDate;
     }
 
+//    public LocalDateTime getExpiredDate() {
+//        return expiredDate;
+//    }
+//
+//    public void setExpiredDate(LocalDateTime expiredDate) {
+//        this.expiredDate = expiredDate;
+//    }
+
     public String getReqParam() {
         return reqParam;
     }
@@ -99,5 +126,13 @@ public class RedoTaskDO {
 
     public void setExecTimes(int execTimes) {
         this.execTimes = execTimes;
+    }
+
+    public Date getQueryTime() {
+        return queryTime;
+    }
+
+    public void setQueryTime(Date queryTime) {
+        this.queryTime = queryTime;
     }
 }

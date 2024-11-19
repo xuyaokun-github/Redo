@@ -20,8 +20,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for tbl_redotask
 -- ----------------------------
-DROP TABLE IF EXISTS `tbl_redotask`;
-CREATE TABLE `tbl_redotask`  (
+DROP TABLE IF EXISTS `tbl_redo_task`;
+CREATE TABLE `tbl_redo_task`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `redo_task_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '补偿任务业务ID',
   `application_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微服务名',

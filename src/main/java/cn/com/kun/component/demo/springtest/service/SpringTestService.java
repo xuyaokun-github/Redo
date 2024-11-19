@@ -1,6 +1,5 @@
 package cn.com.kun.component.demo.springtest.service;
 
-import cn.com.kun.component.demo.RedoDemoService;
 import cn.com.kun.component.demo.springtest.bean.entiy.SpringTestDO;
 import cn.com.kun.component.demo.springtest.dao.SpringTestMapper;
 import org.slf4j.Logger;

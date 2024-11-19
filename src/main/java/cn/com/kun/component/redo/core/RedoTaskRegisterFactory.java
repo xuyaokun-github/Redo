@@ -1,19 +1,19 @@
 package cn.com.kun.component.redo.core;
 
+import cn.com.kun.component.redo.bean.vo.RedoTask;
 import cn.com.kun.component.redo.callback.RedoTaskCallback;
 import cn.com.kun.component.redo.common.exception.RedoTaskCallbackNotFoundException;
 import cn.com.kun.component.redo.common.exception.RedoTaskNotFoundException;
-import cn.com.kun.component.redo.bean.vo.RedoTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 补偿任务注册工厂
+ *
  * author:xuyaokun_kzx
  * date:2021/10/27
  * desc:
@@ -22,15 +22,21 @@ public class RedoTaskRegisterFactory {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RedoTaskRegisterFactory.class);
 
+
+    /**
+     * 重试任务定义集合
+     */
+    private static Map<String, RedoTask> redoTasks = new ConcurrentHashMap();
+
     /**
      * 重试任务回调逻辑集合
      */
     private static Map<String, RedoTaskCallback> redoTaskCallbacks = new ConcurrentHashMap<>();
 
     /**
-     * 重试任务定义集合
+     * 重试任务回调逻辑集合(系统自动注册)
      */
-    private static Map<String, RedoTask> redoTasks = new ConcurrentHashMap();
+    private static Map<String, RedoTaskCallback> autoRegisterRedoTaskCallbacks = new ConcurrentHashMap<>();
 
     public static void register(RedoTask redoTask, RedoTaskCallback redoTaskCallback){
         registerRedoTask(redoTask);
@@ -45,11 +51,13 @@ public class RedoTaskRegisterFactory {
     public static RedoTask findRedoTask(String redoTaskId) throws RedoTaskNotFoundException {
         RedoTask redoTask = redoTasks.get(redoTaskId);
         if (redoTask == null){
-            LOGGER.warn("redoTask:[] can not find redoTask");
+            LOGGER.warn("RedoTask [{}] Not found.", redoTaskId);
             throw new RedoTaskCallbackNotFoundException();
         }
         return redoTask;
     }
+
+
 
     /**
      * 注册重试任务回调逻辑
@@ -70,4 +78,28 @@ public class RedoTaskRegisterFactory {
         return redoTaskCallback;
     }
 
+    public static RedoTaskCallback getRedoTaskCallback(String redoTaskId) throws RedoTaskCallbackNotFoundException {
+        RedoTaskCallback redoTaskCallback = redoTaskCallbacks.get(redoTaskId);
+        return redoTaskCallback;
+    }
+
+    public static boolean checkRedoTask(String redoTaskId) {
+
+        return redoTasks.containsKey(redoTaskId);
+    }
+
+    public static boolean checkRedoTaskCallback(String redoTaskId) {
+
+        return redoTaskCallbacks.containsKey(redoTaskId);
+    }
+
+    public static void addAutoRegisterCallback(String redoTaskId, RedoTaskCallback callback) {
+
+        autoRegisterRedoTaskCallbacks.put(redoTaskId, callback);
+    }
+
+    public static RedoTaskCallback getAutoRegisterCallback(String redoTaskId) {
+
+        return autoRegisterRedoTaskCallbacks.get(redoTaskId);
+    }
 }
