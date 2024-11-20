@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.io.ResourceLoader;
@@ -40,8 +42,8 @@ public class RedoInnerMapperBeanDefinitionRegistrar implements ImportBeanDefinit
         if (resourceLoader != null) {
             scanner.setResourceLoader(resourceLoader);
         }
+        //这2句是必须加的，注册过滤器，在扫描bean定义会匹配到加了@Mapper注解的类
         scanner.setAnnotationClass(Mapper.class);
-        //这一句是必须加的，注册过滤器，在扫描bean定义会匹配到加了@Mapper注解的类
         scanner.registerFilters();
         scanner.doScan(getAllBasePackages(registry));
         //假如后续有其他jar包需要扫描，可以额外使用@MapperScan,重复扫描不会有影响
@@ -49,7 +51,10 @@ public class RedoInnerMapperBeanDefinitionRegistrar implements ImportBeanDefinit
 
     private String[] getAllBasePackages(BeanDefinitionRegistry registry) {
 
-        BeanDefinition beanDefinition = registry.getBeanDefinition("kunShareDemoApplication");
+
+        String[] beanNames = ((DefaultListableBeanFactory) registry).getBeanNamesForAnnotation(SpringBootApplication.class);
+        String beanName = beanNames[0];
+        BeanDefinition beanDefinition = registry.getBeanDefinition(beanName);
         //启动类类名
         String applicationBeanClass = beanDefinition.getBeanClassName();
         //获取到启动类所在的包名，MybatisAutoConfiguration的自动配置默认扫描的就是basePackage

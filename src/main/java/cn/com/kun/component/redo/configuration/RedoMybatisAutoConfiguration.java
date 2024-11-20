@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * 自动配置类，由spring.factories定义该类
+ * 自动配置类，由spring.factories定义该类 或者 通过开关打开
+ *
  * author:xuyaokun_kzx
  * date:2021/10/29
  * desc:
