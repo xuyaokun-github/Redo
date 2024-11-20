@@ -35,7 +35,7 @@ public class RedoProperties implements Serializable {
     private Long deleteScheduleRate = 3600L;
 
     /**
-     * 发出执行通知的执行次数玉芝
+     * 发出执行通知的执行次数
      */
     private int execTimesOfInform = 10;
 
