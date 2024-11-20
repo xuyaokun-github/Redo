@@ -35,10 +35,13 @@ public class RedoControlController {
     @GetMapping("/stop")
     public RedoResultVo<String> stop(){
 
-        //找到所有节点执行这一句
         redoProperties.setEnabled(false);
         return RedoResultVo.valueOfSuccess("停止成功");
     }
 
+    @GetMapping("/stop-query")
+    public RedoResultVo<String> stopQuery(){
 
+        return RedoResultVo.valueOfSuccess(redoProperties.isEnabled() ? "Y" : "N");
+    }
 }

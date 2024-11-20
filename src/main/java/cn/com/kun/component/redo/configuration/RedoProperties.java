@@ -39,6 +39,12 @@ public class RedoProperties implements Serializable {
      */
     private int execTimesOfInform = 10;
 
+    /**
+     * 全局域名
+     * 假如是双活机房，这里配置双活域名,例如：
+     */
+    private String globalDomain = "";
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -117,5 +123,13 @@ public class RedoProperties implements Serializable {
 
     public void setExecTimesOfInform(int execTimesOfInform) {
         this.execTimesOfInform = execTimesOfInform;
+    }
+
+    public String getGlobalDomain() {
+        return globalDomain;
+    }
+
+    public void setGlobalDomain(String globalDomain) {
+        this.globalDomain = globalDomain;
     }
 }

@@ -3,11 +3,13 @@ package cn.com.kun.component.redo.invoke;
 import cn.com.kun.component.redo.bean.vo.RedoExecResVo;
 import cn.com.kun.component.redo.bean.vo.RedoResultVo;
 import cn.com.kun.component.redo.configuration.RedoProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,12 @@ public class DefaultRedoExecInvoker implements RedoExecInvoker{
 
     @Autowired
     private RedoProperties redoProperties;
+
+    /**
+     * 微服务应用名
+     */
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     @PostConstruct
     public void init(){
@@ -76,5 +84,19 @@ public class DefaultRedoExecInvoker implements RedoExecInvoker{
         return resultVo;
     }
 
+    @Override
+    public RedoResultVo<String> stopQuery() {
+
+        String domain = redoProperties.getGlobalDomain();
+        RedoResultVo<String> resultVo = RedoResultVo.valueOfSuccess("Y");
+        if (StringUtils.isNotEmpty(domain)){
+            String url = domain + "/" + applicationName + "/redo-control/stop-query";
+            ParameterizedTypeReference<RedoResultVo<String>> responseBodyType = new ParameterizedTypeReference<RedoResultVo<String>>(){};
+            ResponseEntity<RedoResultVo<String>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, responseBodyType);
+            resultVo = responseEntity.getBody();
+        }
+
+        return resultVo;
+    }
 
 }
