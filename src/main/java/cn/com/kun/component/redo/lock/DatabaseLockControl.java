@@ -1,6 +1,6 @@
 package cn.com.kun.component.redo.lock;
 
-import cn.com.kun.component.redo.lock.clusterlock.dblock.DBClusterLockHandler;
+import cn.com.kun.component.distributedlock.dblock.DistributedDbLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 public class DatabaseLockControl implements LockControl{
 
     @Autowired
-    private DBClusterLockHandler dbClusterLockHandler;
+    private DistributedDbLock dbClusterLockHandler;
 
     @Override
     public boolean lock(String resourcName) {
-        return dbClusterLockHandler.lock(resourcName);
+        return dbClusterLockHandler.tryLock(resourcName);
     }
 
     @Override
-    public boolean unlock(String resourcName) {
-        return dbClusterLockHandler.unlock(resourcName);
+    public void unlock(String resourcName) {
+        dbClusterLockHandler.unlock(resourcName);
     }
 
 }

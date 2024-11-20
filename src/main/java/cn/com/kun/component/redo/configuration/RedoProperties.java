@@ -34,6 +34,11 @@ public class RedoProperties implements Serializable {
 
     private Long deleteScheduleRate = 3600L;
 
+    /**
+     * 发出执行通知的执行次数玉芝
+     */
+    private int execTimesOfInform = 10;
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -104,5 +109,13 @@ public class RedoProperties implements Serializable {
 
     public void setDeleteScheduleRate(Long deleteScheduleRate) {
         this.deleteScheduleRate = deleteScheduleRate;
+    }
+
+    public int getExecTimesOfInform() {
+        return execTimesOfInform;
+    }
+
+    public void setExecTimesOfInform(int execTimesOfInform) {
+        this.execTimesOfInform = execTimesOfInform;
     }
 }

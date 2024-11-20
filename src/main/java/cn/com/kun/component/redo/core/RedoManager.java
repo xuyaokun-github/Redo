@@ -6,6 +6,8 @@ import cn.com.kun.component.redo.callback.RedoTaskCallback;
 import cn.com.kun.component.redo.common.exception.RedoTaskCallbackNotFoundException;
 import cn.com.kun.component.redo.configuration.RedoProperties;
 import cn.com.kun.component.redo.dao.RedoDao;
+import cn.com.kun.component.redo.inform.RedoExecInformInterface;
+import cn.com.kun.component.redo.inform.RedoExecInformRegistry;
 import cn.com.kun.component.redo.invoke.RedoExecInvoker;
 import cn.com.kun.component.redo.lock.LockControl;
 import cn.com.kun.component.redo.lock.LockControlRegistry;
@@ -368,6 +370,21 @@ public class RedoManager {
     }
 
     private boolean checkMaxAttempts(RedoTaskDO redoTaskDO) {
+
+        //假如执行次数超出N次，发出通知
+        if(redoTaskDO.getExecTimes() > redoProperties.getExecTimesOfInform()){
+            RedoExecInformInterface informInterface = RedoExecInformRegistry.getRedoExecInformInterface();
+            String msg = String.format("RedoTaskId:%s 重试执行次数:%s ID:%s 请关注补偿执行情况", redoTaskDO.getRedoTaskId(),
+                    redoTaskDO.getExecTimes(), redoTaskDO.getId());
+            if (informInterface != null){
+                informInterface.execTimesInform(redoTaskDO.getId(), redoTaskDO.getRedoTaskId(), redoTaskDO.getExecTimes(), msg);
+            }else {
+                //假如没有注册通知实现，则输出日志
+                LOGGER.warn(msg);
+            }
+        }
+
+
         return redoTaskDO.getMaxAttempts() != 0 && redoTaskDO.getExecTimes() >= redoTaskDO.getMaxAttempts();
     }
 
