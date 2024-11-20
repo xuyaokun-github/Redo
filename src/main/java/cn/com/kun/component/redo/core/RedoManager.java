@@ -63,9 +63,9 @@ public class RedoManager {
         return "cn.com.kun.component.redo.core.RedoManager.findAndRedo:" + applicationName;
     }
 
-    public boolean addRedoTask(String redoTaskId, RedoReqParam redoReqParam){
+    public boolean saveRedoTask(String redoTaskId, RedoReqParam redoReqParam){
 
-        return addRedoTask(redoTaskId, RedoJacksonUtils.toJSONString(redoReqParam));
+        return saveRedoTask(redoTaskId, RedoJacksonUtils.toJSONString(redoReqParam));
     }
 
     /**
@@ -74,7 +74,7 @@ public class RedoManager {
      * @param redoTaskId
      * @return
      */
-    public boolean addRedoTask(String redoTaskId, String reqParam){
+    public boolean saveRedoTask(String redoTaskId, String reqParam){
 
         if (!redoProperties.isEnabled()){
             LOGGER.warn("补偿组件开关未开启，请检查");
@@ -84,7 +84,30 @@ public class RedoManager {
         //添加补偿任务入库
         RedoTask redoTask = RedoTaskRegisterFactory.findRedoTask(redoTaskId);
         RedoTaskDO redoTaskDO = buildRedoTaskDO(redoTask, reqParam);
-        int res = getRedoDao().insert(redoTaskDO);
+        int res = 0;
+        if (!redoTask.isSpinSave()){
+            res = getRedoDao().insert(redoTaskDO);
+        }else {
+            //遇到异常开始自旋，直至保存成功为止
+            while (true){
+                try {
+                    res = getRedoDao().insert(redoTaskDO);
+                    break;
+                }catch (Exception e){
+                    LOGGER.error("补偿数据入库异常(严重问题，请检查数据库)", e);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    continue;
+                }
+            }
+        }
+        if (res > 0){
+            LOGGER.info("补偿数据入库成功");
+        }
+
         return res > 0;
     }
 

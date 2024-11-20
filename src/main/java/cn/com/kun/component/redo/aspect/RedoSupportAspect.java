@@ -74,7 +74,7 @@ public class RedoSupportAspect {
                 LOGGER.warn("识别到可重试异常", e);
                 RedoReqParam redoReqParam = buildRedoReqParam(pjp);
                 LOGGER.info("保存待补偿记录");
-                redoManager.addRedoTask(redoTaskId, redoReqParam);
+                redoManager.saveRedoTask(redoTaskId, redoReqParam);
                 /*
                     此时给上游返回什么呢？
                     得分两类情况：

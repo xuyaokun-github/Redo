@@ -35,6 +35,11 @@ public class RedoTask {
      */
     private int expiredSeconds;
 
+    /**
+     * 是否自旋保存：默认为false
+     */
+    private boolean spinSave;
+
     public RedoTask(String redoTaskId) {
         this.redoTaskId = redoTaskId;
     }
@@ -126,6 +131,17 @@ public class RedoTask {
             return this;
         }
 
+        /**
+         * 是否自旋保存（一直保存到成功为止）
+         *
+         * @param spinSave
+         * @return
+         */
+        public RedoTaskBuilder spinSave(boolean spinSave){
+            this.redoTask.setSpinSave(spinSave);
+            return this;
+        }
+
         public RedoTask build(){
             return this.redoTask;
         }
@@ -135,4 +151,11 @@ public class RedoTask {
         }
     }
 
+    public boolean isSpinSave() {
+        return spinSave;
+    }
+
+    public void setSpinSave(boolean spinSave) {
+        this.spinSave = spinSave;
+    }
 }

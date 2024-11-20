@@ -12,7 +12,7 @@ public class SpringTestService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SpringTestService.class);
 
-    @Autowired
+    @Autowired(required = false)
     private SpringTestMapper springTestMapper;
 
     public void show(){

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * author:xuyaokun_kzx
  * date:2021/10/29
  * desc:
- */
+*/
 @ComponentScan({"cn.com.kun.component.redo",
         "cn.com.kun.component.jdbc",
         "cn.com.kun.component.distributedlock"})

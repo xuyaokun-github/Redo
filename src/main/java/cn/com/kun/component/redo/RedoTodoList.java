@@ -1,7 +1,5 @@
 package cn.com.kun.component.redo;
 
-import cn.com.kun.component.redo.bean.vo.RedoTask;
-
 /**
  * TODOList:
  * 待优化需求
@@ -16,12 +14,4 @@ import cn.com.kun.component.redo.bean.vo.RedoTask;
 */
 public class RedoTodoList {
 
-    public static void main(String[] args) {
-        RedoTask redoTask = RedoTask.newBuilder("").maxAttempts(3).build();
-        System.out.println(redoTask);
-    }
-
-    /*
-        D:\maven\apache-maven-3.6.3-bin\apache-maven-3.6.3\conf\settings.xml
-     */
 }

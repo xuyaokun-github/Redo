@@ -1,6 +1,7 @@
 package cn.com.kun.component.redo.controller;
 
 import cn.com.kun.component.redo.bean.vo.RedoResultVo;
+import cn.com.kun.component.redo.configuration.RedoProperties;
 import cn.com.kun.component.redo.core.RedoDataSupervisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +22,23 @@ public class RedoControlController {
     @Autowired
     private RedoDataSupervisor redoDataSupervisor;
 
+    @Autowired
+    private RedoProperties redoProperties;
+
     @GetMapping("/remove")
     public RedoResultVo<String> remove(@RequestParam(required = false) String redoTaskId){
 
         redoDataSupervisor.remove(redoTaskId);
         return RedoResultVo.valueOfSuccess("清理数据成功");
     }
+
+    @GetMapping("/stop")
+    public RedoResultVo<String> stop(){
+
+        //找到所有节点执行这一句
+        redoProperties.setEnabled(false);
+        return RedoResultVo.valueOfSuccess("停止成功");
+    }
+
 
 }

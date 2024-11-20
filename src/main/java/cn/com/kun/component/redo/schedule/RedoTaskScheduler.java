@@ -61,7 +61,9 @@ public class RedoTaskScheduler implements CommandLineRunner {
                 LOGGER.debug("RedoTaskProcessTask running!");
             }
             try {
-                redoManager.runRedo();
+                if (redoProperties.isEnabled()){
+                    redoManager.runRedo();
+                }
             }catch (Throwable e){
                 LOGGER.error("RedoTaskProcessTask error", e);
             }
