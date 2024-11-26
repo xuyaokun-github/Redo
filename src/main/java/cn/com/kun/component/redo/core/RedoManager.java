@@ -21,6 +21,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,13 +122,34 @@ public class RedoManager {
         redoTaskDO.setMaxAttempts(redoTask.getMaxAttempts());
         redoTaskDO.setTryForever(redoTask.isTryForever());
         redoTaskDO.setReqParam(reqParam);
-        redoTaskDO.setExpiredDate(redoTask.getExpiredSeconds() > 0 ? buildExpiredDate(redoTask.getExpiredSeconds()) : redoTask.getExpiredDate());
+        redoTaskDO.setExpiredDate(buildExpiredDate(redoTask.getExpiredSeconds(), redoTask.getExpiredDate()));
         //假如用LocalDateTime类型
         //redoTaskDO.setExpiredDate(LocalDateTime.ofInstant(redoTask.getExpiredDate().toInstant(), ZoneId.systemDefault()));
         //默认用当前时间做查询时间
         redoTaskDO.setQueryTime(new Date());
 
         return redoTaskDO;
+    }
+
+    /**
+     * 假如没指定过期时间，默认设置一个较大的时间
+     *
+     * @param expiredSeconds
+     * @param expiredDate
+     * @return
+     */
+    private Date buildExpiredDate(int expiredSeconds, Date expiredDate) {
+
+        Date date = expiredSeconds > 0 ? buildExpiredDate(expiredSeconds) : expiredDate;
+        if (expiredDate == null){
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                date = format.parse("9999-12-31");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return date;
     }
 
     private Date buildExpiredDate(int expiredSeconds) {

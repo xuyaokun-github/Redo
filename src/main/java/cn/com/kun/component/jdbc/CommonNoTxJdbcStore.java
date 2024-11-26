@@ -126,6 +126,29 @@ public class CommonNoTxJdbcStore {
     }
 
 
+    public int update(String updateSql, PreparedStatementParamProvider psParamProvider){
+
+        PreparedStatement ps = null;
+        Connection conn = null;
+
+        try {
+            conn = CustomDBConnectionManager.getInstance().getConnection();
+            ps = conn.prepareStatement(updateSql);
+            if (psParamProvider != null){
+                psParamProvider.initPreparedStatementParam(ps);
+            }
+            int res = ps.executeUpdate();
+            //提交连接
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(ps);
+            cleanupConnection(conn);
+        }
+        return 0;
+    }
+
     private <T> T toJavaObject(ResultSet resultSet, Class<T> requiredClass) throws Exception {
 
         T instance = requiredClass.getDeclaredConstructor().newInstance();
@@ -167,7 +190,9 @@ public class CommonNoTxJdbcStore {
         } catch (SQLException e) {
             if (e.getMessage().contains("Column") && e.getMessage().contains("not found")) {
                 //出现列Not found异常
-                LOGGER.info("结果集中未包含列:{}", fieldName);
+                if (LOGGER.isDebugEnabled()){
+                    LOGGER.debug("结果集中未包含列:{}", fieldName);
+                }
             } else {
                 LOGGER.error("isExitColumn异常", e);
             }

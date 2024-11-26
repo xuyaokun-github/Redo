@@ -1,6 +1,7 @@
 package cn.com.kun.component.redo.dao.jdbc;
 
 import cn.com.kun.component.jdbc.CommonNoTxJdbcStore;
+import cn.com.kun.component.jdbc.PreparedStatementParamProvider;
 import cn.com.kun.component.redo.bean.entiy.RedoTaskDO;
 import cn.com.kun.component.redo.dao.RedoDao;
 import cn.com.kun.component.redo.dao.RedoDaoStrategyFactory;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +28,10 @@ public class JdbcRedoDao implements RedoDao, InitializingBean {
             "expired_date,req_param,create_time,query_time) " +
             "values('%s','%s',%s,%s,'%s','%s','%s','%s')";
 
+    private String insertSql2 = "insert into tbl_redo_task(redo_task_id,application_name,max_attempts,try_forever," +
+            "expired_date,req_param,create_time,query_time) " +
+            "values(?,?,?,?,?,?,?,?)";
+
     private String deleteSql = "delete from tbl_redo_task where id=%s";
 
     private String updateSql = "update tbl_redo_task set exec_times=exec_times+1 where id=%s";
@@ -35,15 +43,36 @@ public class JdbcRedoDao implements RedoDao, InitializingBean {
     @Override
     public int insert(RedoTaskDO redoTask) {
 
-        String expiredDateStr = toStr(redoTask.getExpiredDate(), PATTERN_YYYY_MM_DD_HH_MM_SS);
+        String expiredDateStr = redoTask.getExpiredDate() == null ? "9999:12:31 00:00:00" : toStr(redoTask.getExpiredDate(), PATTERN_YYYY_MM_DD_HH_MM_SS);
 
-        String targetSql = String.format(insertSql, redoTask.getRedoTaskId(),
-                redoTask.getApplicationName(), redoTask.getMaxAttempts(), redoTask.isTryForever(),
+        String targetSql = String.format(insertSql,
+                redoTask.getRedoTaskId(),
+                redoTask.getApplicationName(),
+                redoTask.getMaxAttempts(),
+                redoTask.isTryForever(),
                 expiredDateStr,
                 redoTask.getReqParam(),
                 toStr(redoTask.getCreateTime(), PATTERN_YYYY_MM_DD_HH_MM_SS),
                 toStr(redoTask.getQueryTime(), PATTERN_YYYY_MM_DD_HH_MM_SS));
-        return commonNoTxJdbcStore.update(targetSql);
+        //int res = commonNoTxJdbcStore.update(targetSql);
+        int res = commonNoTxJdbcStore.update(insertSql2, new PreparedStatementParamProvider() {
+            @Override
+            public void initPreparedStatementParam(PreparedStatement ps) {
+                try {
+                    ps.setString(1, redoTask.getRedoTaskId());
+                    ps.setString(2, redoTask.getApplicationName());
+                    ps.setInt(3, redoTask.getMaxAttempts());
+                    ps.setBoolean(4, redoTask.isTryForever());
+                    ps.setTimestamp(5, new Timestamp(redoTask.getExpiredDate().getTime()));
+                    ps.setString(6, redoTask.getReqParam());
+                    ps.setTimestamp(7, new Timestamp(redoTask.getCreateTime().getTime()));
+                    ps.setTimestamp(8, new Timestamp(redoTask.getQueryTime().getTime()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return res;
     }
 
     private String toStr(Date date, String pattern) {

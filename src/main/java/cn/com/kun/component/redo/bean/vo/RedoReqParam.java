@@ -1,5 +1,6 @@
 package cn.com.kun.component.redo.bean.vo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RedoReqParam {
@@ -17,5 +18,12 @@ public class RedoReqParam {
         this.params = params;
     }
 
+    public void put(String paramName, Object value) {
+
+        if (params == null){
+            params = new HashMap<>();
+        }
+        params.put(paramName, value);
+    }
 
 }

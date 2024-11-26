@@ -72,7 +72,7 @@ public class DbtuilsRedoDao implements RedoDao, InitializingBean {
 
         return commonDbUtilsJdbcStore.update(insertSql, redoTask.getRedoTaskId(),
                 redoTask.getApplicationName(), redoTask.getMaxAttempts(), redoTask.isTryForever(), redoTask.getExpiredDate(),
-                redoTask.getReqParam(), redoTask.getCreateTime());
+                redoTask.getReqParam(), redoTask.getCreateTime(), redoTask.getCreateTime());
     }
 
     @Override
