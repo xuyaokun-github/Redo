@@ -73,7 +73,7 @@ public class RedoUseDemoService {
             map.put("desc", "kunghsu");
             redoReqParam.setParams(map);
             //调用组件提供出来的工具类方法，添加回调任务
-            redoManager.addRedoTask(redoTaskIdOne, RedoJacksonUtils.toJSONString(redoReqParam));
+            redoManager.saveRedoTask(redoTaskIdOne, RedoJacksonUtils.toJSONString(redoReqParam));
         }
 
     }
